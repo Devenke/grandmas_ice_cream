@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ice_cream</string>
+    <string name="select">Választ</string>
+    <string name="vanilla">Vanília</string>
+    <string name="base_price">1 €</string>
+    <string name="select_cone">Válasszon tölcsért</string>
+    <string name="select_other">Egyéb</string>
+    <string name="select_dressing">Válassz öntetet</string>
+    <string name="to_cart">Kosárba</string>
+</resources>
