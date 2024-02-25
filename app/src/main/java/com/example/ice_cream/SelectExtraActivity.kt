@@ -1,32 +1,69 @@
 package com.example.ice_cream
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Spinner
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.ice_cream.databinding.ActivitySelectExtraBinding
+import com.example.ice_cream.db.AppDatabase
+import com.example.ice_cream.model.IceCream
+import com.example.ice_cream.model.ItemOrder
+import com.example.ice_cream.repository.ItemOrderRepository
+import com.example.ice_cream.utilities.EXTRA_ICE_CREAM
+import com.example.ice_cream.utilities.OTHER_NONE
+import com.example.ice_cream.utilities.OTHER_ROLETTI
+import com.example.ice_cream.utilities.OTHER_SUGAR_MAGIC
+import com.example.ice_cream.utilities.OTHER_WAFER
+import com.example.ice_cream.utilities.SAUCE_NONE
+import com.example.ice_cream.utilities.SAUCE_STRAWBERRY
+import com.example.ice_cream.utilities.SAUCE_VANILLA
+import com.example.ice_cream.utilities.CHOCOLATE_CONE
+import com.example.ice_cream.utilities.CUP
+import com.example.ice_cream.utilities.NORMAL_CONE
+import com.example.ice_cream.utilities.SWEET_CONE
+import com.example.ice_cream.viewmodel.ItemOrderViewModel
+import com.example.ice_cream.viewmodel.ItemOrderViewModelFactory
 
 class SelectExtraActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySelectExtraBinding
+
     private lateinit var spinnerCones: Spinner
     private lateinit var spinnerOthers: Spinner
-    private lateinit var spinnerdressings: Spinner
+    private lateinit var spinnerDressings: Spinner
+
     private lateinit var confirmButton: Button
+    private lateinit var iceCreamImage: ImageView
+    private lateinit var cartButton: Button
+    private lateinit var iceCream: IceCream
+
+    private lateinit var itemOrderViewModel: ItemOrderViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select_extra)
+        binding = ActivitySelectExtraBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setupViewModel()
 
-        spinnerCones = findViewById(R.id.spinnerCones)
-        spinnerOthers = findViewById(R.id.spinnerOther)
-        spinnerdressings = findViewById(R.id.spinnerDressings)
-        spinnerCones.prompt = "Válassz"
-        confirmButton = findViewById(R.id.confirmButton)
+        spinnerCones = binding.spinnerCones
+        spinnerOthers = binding.spinnerOther
+        spinnerDressings = binding.spinnerDressings
+        confirmButton = binding.confirmButton
+        iceCreamImage = binding.selectExtraImage
 
-        val toppings = arrayOf("Normál tölcsér", "Édes tölcsér", "Csokis tölcsér", "Kehely")
-        val other = arrayOf("Nem kérek", "Cukorvarázs", "Roletti", "Ostya")
-        val sauces = arrayOf("Nem kérek", "Eper öntet", "Vanília öntet")
+
+        iceCream = intent.getParcelableExtra(EXTRA_ICE_CREAM)!!
+        Glide.with(this).load(iceCream.imageUrl).into(iceCreamImage)
+
+        val toppings = arrayOf(NORMAL_CONE, SWEET_CONE, CHOCOLATE_CONE, CUP)
+        val other = arrayOf(OTHER_NONE, OTHER_SUGAR_MAGIC, OTHER_ROLETTI, OTHER_WAFER)
+        val sauces = arrayOf(SAUCE_NONE, SAUCE_STRAWBERRY, SAUCE_VANILLA)
+
 
         val toppingsAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, toppings)
         val otherAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, other)
@@ -34,12 +71,52 @@ class SelectExtraActivity : AppCompatActivity() {
 
         spinnerCones.adapter = toppingsAdapter
         spinnerOthers.adapter = otherAdapter
-        spinnerdressings.adapter = saucesAdapter
+        spinnerDressings.adapter = saucesAdapter
 
         confirmButton.setOnClickListener {
-            val selectedTopping = spinnerCones.selectedItem.toString()
-            val selectedOther = spinnerOthers.selectedItem.toString()
-            val selectedSauce = spinnerdressings.selectedItem.toString()
+            val selectedConeId = when (spinnerCones.selectedItem.toString()) {
+                NORMAL_CONE -> 1
+                SWEET_CONE -> 2
+                CHOCOLATE_CONE -> 3
+                CUP -> 4
+                else -> -1
+            }
+            val selectedOtherId = when (spinnerOthers.selectedItem.toString()) {
+                OTHER_SUGAR_MAGIC -> 5
+                OTHER_ROLETTI -> 6
+                OTHER_WAFER -> 7
+                else -> null
+            }
+            val selectedDressingId = when (spinnerDressings.selectedItem.toString()) {
+                SAUCE_STRAWBERRY -> 8
+                SAUCE_VANILLA -> 9
+                else -> null
+            }
+
+            itemOrderViewModel.addItemOrder(
+                ItemOrder(
+                    0,
+                    iceCream.id!!,
+                    iceCream.name!!,
+                    selectedConeId,
+                    selectedDressingId,
+                    selectedOtherId)
+            )
+            itemOrderViewModel.allItemOrders.observe(this) {
+                val list = it
+            }
+
         }
+    }
+
+    private fun setupViewModel() {
+        val itemOrderRepository = ItemOrderRepository(AppDatabase(this))
+        val viewModelProviderFactory = ItemOrderViewModelFactory(application, itemOrderRepository)
+        itemOrderViewModel = ViewModelProvider(this, viewModelProviderFactory)[ItemOrderViewModel::class.java]
+    }
+
+    fun navigateToCart(view: View) {
+        val intent = Intent(this, ShoppingCartActivity::class.java)
+        startActivity(intent)
     }
 }

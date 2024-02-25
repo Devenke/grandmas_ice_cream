@@ -22,7 +22,6 @@ import com.example.ice_cream.utilities.STATUS_UNAVAILABLE
 
 class IceCreamAdapter(var iceCreams: List<IceCream>, private val context: Context) : RecyclerView.Adapter<IceCreamAdapter.IceCreamViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IceCreamViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.ice_cream_item, parent, false)
         return IceCreamViewHolder(view)

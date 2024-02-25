@@ -7,4 +7,6 @@
     <string name="select_other">Egyéb</string>
     <string name="select_dressing">Válassz öntetet</string>
     <string name="to_cart">Kosárba</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
