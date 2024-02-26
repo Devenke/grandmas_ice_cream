@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_red_dark">
 
+    <include
+        android:id="@+id/headerBar"
+        layout="@layout/default_header" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
         android:layout_width="0dp"
@@ -13,6 +17,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/headerBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,34 +1,19 @@
 package com.example.ice_cream.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.ice_cream.R
-import com.example.ice_cream.SelectExtraActivity
-import com.example.ice_cream.databinding.ItemOrderBinding
-import com.example.ice_cream.enums.Status
-import com.example.ice_cream.model.IceCream
 import com.example.ice_cream.model.ItemOrder
-import com.example.ice_cream.utilities.BASE_PRICE
-import com.example.ice_cream.utilities.EXTRA_ICE_CREAM
-import com.example.ice_cream.utilities.STATUS_MELTED
-import com.example.ice_cream.utilities.STATUS_NULL
-import com.example.ice_cream.utilities.STATUS_UNAVAILABLE
-import com.example.ice_cream.viewmodel.ItemOrderViewModel
 
-class ItemOrderAdapter(private val itemOrders: List<ItemOrder>, private val context: Context) : RecyclerView.Adapter<ItemOrderAdapter.ItemOrderViewHolder>() {
+class ItemOrderAdapter(private val itemOrders: List<ItemOrder>, private val context: Context, private val iconClick: (ItemOrder) -> Unit) : RecyclerView.Adapter<ItemOrderAdapter.ItemOrderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemOrderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_order, parent, false)
-        return ItemOrderViewHolder(view)
+        return ItemOrderViewHolder(view, iconClick)
     }
 
     override fun getItemCount() = itemOrders.size
@@ -37,11 +22,12 @@ class ItemOrderAdapter(private val itemOrders: List<ItemOrder>, private val cont
         holder.bindProduct(itemOrders[position], context)
     }
 
-    inner class ItemOrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ItemOrderViewHolder(itemView: View, val iconClick: (ItemOrder) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val tasteType: TextView = itemView.findViewById(R.id.itemOrderTasteText)
+        private val deleteIcon: ImageView = itemView.findViewById(R.id.deleteItemOrderIcon)
         fun bindProduct(itemOrder: ItemOrder, context: Context) {
-
             tasteType.text = itemOrder.iceCreamName
+            deleteIcon.setOnClickListener { iconClick(itemOrder) }
         }
     }
 }

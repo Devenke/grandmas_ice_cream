@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class ItemOrderViewModel(app: Application, private val itemOrderRepository: ItemOrderRepository) :AndroidViewModel(app) {
 
+    var itemOrderCount = 0
     val allItemOrders: LiveData<List<ItemOrder>> = itemOrderRepository.getAllItemOrders()
 
     fun addItemOrder(itemOrder: ItemOrder) =

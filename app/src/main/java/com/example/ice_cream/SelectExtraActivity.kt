@@ -8,13 +8,11 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
-import androidx.lifecycle.ViewModelProvider
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.ice_cream.databinding.ActivitySelectExtraBinding
-import com.example.ice_cream.db.AppDatabase
 import com.example.ice_cream.model.IceCream
 import com.example.ice_cream.model.ItemOrder
-import com.example.ice_cream.repository.ItemOrderRepository
 import com.example.ice_cream.utilities.EXTRA_ICE_CREAM
 import com.example.ice_cream.utilities.OTHER_NONE
 import com.example.ice_cream.utilities.OTHER_ROLETTI
@@ -28,7 +26,7 @@ import com.example.ice_cream.utilities.CUP
 import com.example.ice_cream.utilities.NORMAL_CONE
 import com.example.ice_cream.utilities.SWEET_CONE
 import com.example.ice_cream.viewmodel.ItemOrderViewModel
-import com.example.ice_cream.viewmodel.ItemOrderViewModelFactory
+import com.example.ice_cream.viewmodel.ItemOrderViewModelProvider
 
 class SelectExtraActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySelectExtraBinding
@@ -39,16 +37,22 @@ class SelectExtraActivity : AppCompatActivity() {
 
     private lateinit var confirmButton: Button
     private lateinit var iceCreamImage: ImageView
-    private lateinit var cartButton: Button
     private lateinit var iceCream: IceCream
 
     private lateinit var itemOrderViewModel: ItemOrderViewModel
+    private lateinit var itemOrderCountText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectExtraBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupViewModel()
+        itemOrderViewModel = ItemOrderViewModelProvider.getItemOrderViewModel(this)
+        itemOrderCountText = binding.headerBar.itemCountText
+
+        itemOrderViewModel.allItemOrders.observe(this) {
+            itemOrderViewModel.itemOrderCount = it.size
+            itemOrderCountText.text = itemOrderViewModel.itemOrderCount.toString()
+        }
 
         spinnerCones = binding.spinnerCones
         spinnerOthers = binding.spinnerOther
@@ -102,17 +106,9 @@ class SelectExtraActivity : AppCompatActivity() {
                     selectedDressingId,
                     selectedOtherId)
             )
-            itemOrderViewModel.allItemOrders.observe(this) {
-                val list = it
-            }
-
+            itemOrderViewModel.itemOrderCount++
+            itemOrderCountText.text = itemOrderViewModel.itemOrderCount.toString()
         }
-    }
-
-    private fun setupViewModel() {
-        val itemOrderRepository = ItemOrderRepository(AppDatabase(this))
-        val viewModelProviderFactory = ItemOrderViewModelFactory(application, itemOrderRepository)
-        itemOrderViewModel = ViewModelProvider(this, viewModelProviderFactory)[ItemOrderViewModel::class.java]
     }
 
     fun navigateToCart(view: View) {

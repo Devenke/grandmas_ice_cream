@@ -27,4 +27,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cart_outline" />
 
+
+    <TextView
+        android:id="@+id/item_count_text"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/cart_item_count"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/shoppingCartImage"
+        app:layout_constraintEnd_toEndOf="@+id/shoppingCartImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
