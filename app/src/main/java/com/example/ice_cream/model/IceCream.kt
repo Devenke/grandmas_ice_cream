@@ -3,16 +3,16 @@ package com.example.ice_cream.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.example.ice_cream.enums.Status
-import java.io.Serializable
+import com.google.gson.annotations.SerializedName
 
-class IceCream (
-    val id: Long? = null,
-    val name: String? = null,
-    val status: Status? = null,
-    val imageUrl: String? = null
+data class IceCream (
+    val id: Long?,
+    val name: String?,
+    var status: Status?,
+    var imageUrl: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readValue(Long::class.java.classLoader) as Long,
         parcel.readString(),
         parcel.readSerializable() as? Status,
         parcel.readString()

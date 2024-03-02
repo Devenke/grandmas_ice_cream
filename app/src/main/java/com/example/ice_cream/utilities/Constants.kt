@@ -22,3 +22,9 @@ const val OTHER_WAFER = "Ostya"
 const val SAUCE_NONE = "Válassz"
 const val SAUCE_STRAWBERRY = "Eper öntet"
 const val SAUCE_VANILLA = "Vanília öntet"
+
+const val GIT_BASE_URL = "https://raw.githubusercontent.com/"
+const val GIT_ICE_CREAM_URL = "udemx/hr-resources/master/icecreams.json"
+const val CHECK_RESPONSE_TAG = "CHECK_RESPONSE"
+
+const val MISSING_IMAGE_URL = "https://raw.githubusercontent.com/udemx/software-test/main/mobile-development/assets/placeholder.jpg"
