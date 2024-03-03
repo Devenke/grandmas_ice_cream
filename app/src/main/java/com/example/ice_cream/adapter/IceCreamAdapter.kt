@@ -16,6 +16,7 @@ import com.example.ice_cream.enums.Status
 import com.example.ice_cream.model.IceCream
 import com.example.ice_cream.utilities.BASE_PRICE
 import com.example.ice_cream.utilities.EXTRA_ICE_CREAM
+import com.example.ice_cream.utilities.MISSING_IMAGE_URL
 import com.example.ice_cream.utilities.STATUS_MELTED
 import com.example.ice_cream.utilities.STATUS_NULL
 import com.example.ice_cream.utilities.STATUS_UNAVAILABLE
@@ -41,6 +42,7 @@ class IceCreamAdapter(var iceCreams: List<IceCream>, private val context: Contex
         private val selectButton: Button = itemView.findViewById(R.id.selectButton)
 
         fun bindProduct(iceCream: IceCream, context: Context) {
+            if (iceCream.imageUrl == null) iceCream.imageUrl = MISSING_IMAGE_URL
             Glide.with(context)
                 .load(iceCream.imageUrl)
                 .into(itemImage)

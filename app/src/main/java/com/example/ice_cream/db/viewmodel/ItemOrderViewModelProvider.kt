@@ -1,9 +1,9 @@
-package com.example.ice_cream.viewmodel
+package com.example.ice_cream.db.viewmodel
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.ice_cream.db.AppDatabase
-import com.example.ice_cream.repository.ItemOrderRepository
+import com.example.ice_cream.db.repository.ItemOrderRepository
 
 object ItemOrderViewModelProvider {
     private var itemOrderViewModel: ItemOrderViewModel? = null

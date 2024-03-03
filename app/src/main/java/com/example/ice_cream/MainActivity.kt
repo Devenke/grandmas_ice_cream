@@ -22,8 +22,8 @@ import com.example.ice_cream.utilities.CHECK_RESPONSE_TAG
 import com.example.ice_cream.utilities.GIT_BASE_URL
 import com.example.ice_cream.utilities.ICE_CREAMS_DATA_PATH
 import com.example.ice_cream.utilities.MISSING_IMAGE_URL
-import com.example.ice_cream.viewmodel.ItemOrderViewModel
-import com.example.ice_cream.viewmodel.ItemOrderViewModelProvider
+import com.example.ice_cream.db.viewmodel.ItemOrderViewModel
+import com.example.ice_cream.db.viewmodel.ItemOrderViewModelProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
@@ -102,9 +102,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        adapter.iceCreams = it.iceCreams.apply {
-                            this[2].imageUrl = MISSING_IMAGE_URL
-                        }
+                        adapter.iceCreams = it.iceCreams
                         iceCreams = it.iceCreams
                         adapter.notifyDataSetChanged()
                     }
@@ -133,9 +131,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 

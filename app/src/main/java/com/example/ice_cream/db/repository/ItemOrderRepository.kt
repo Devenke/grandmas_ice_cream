@@ -1,4 +1,4 @@
-package com.example.ice_cream.repository
+package com.example.ice_cream.db.repository
 
 import androidx.lifecycle.LiveData
 import com.example.ice_cream.db.AppDatabase

@@ -1,4 +1,4 @@
-package com.example.ice_cream.viewmodel
+package com.example.ice_cream.db.viewmodel
 
 import android.app.Application
 import android.util.Log
@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.ice_cream.model.ItemOrder
-import com.example.ice_cream.repository.ItemOrderRepository
+import com.example.ice_cream.db.repository.ItemOrderRepository
 import kotlinx.coroutines.launch
 
 class ItemOrderViewModel(app: Application, private val itemOrderRepository: ItemOrderRepository) :AndroidViewModel(app) {
